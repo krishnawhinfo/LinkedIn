@@ -1,5 +1,6 @@
 import React from 'react';
 import Markdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 import { 
   Download, 
   Copy, 
@@ -376,8 +377,8 @@ export default function ResultsDisplay({
             <div className="absolute top-4 right-4 px-2 py-1 bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest rounded">
               Final Post
             </div>
-            <div className="markdown-body font-sans text-lg text-slate-800">
-              <Markdown>{post.content}</Markdown>
+            <div className="markdown-body font-sans text-lg text-slate-800 whitespace-pre-wrap">
+              <Markdown remarkPlugins={[remarkBreaks]}>{post.content}</Markdown>
             </div>
             {post.imageUrl && (
               <div className="mt-6 rounded-xl overflow-hidden border border-slate-200 shadow-sm">

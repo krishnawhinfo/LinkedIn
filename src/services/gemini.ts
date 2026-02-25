@@ -33,7 +33,27 @@ const cleanText = (text: string) => {
 const parseAIResponse = (text: string) => {
   try {
     const cleaned = cleanText(text);
-    return JSON.parse(cleaned);
+    const parsed = JSON.parse(cleaned);
+    
+    // Recursively handle literal \n strings in the parsed object
+    const fixNewLines = (obj: any): any => {
+      if (typeof obj === 'string') {
+        return obj.replace(/\\n/g, '\n');
+      }
+      if (Array.isArray(obj)) {
+        return obj.map(fixNewLines);
+      }
+      if (obj !== null && typeof obj === 'object') {
+        const newObj: any = {};
+        for (const key in obj) {
+          newObj[key] = fixNewLines(obj[key]);
+        }
+        return newObj;
+      }
+      return obj;
+    };
+
+    return fixNewLines(parsed);
   } catch (e) {
     console.error("Failed to parse AI response:", e);
     return {};
