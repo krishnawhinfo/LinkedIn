@@ -23,7 +23,7 @@ export default function ProfileOptimizer({ onAnalysisComplete, onLoading }: Prof
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { 'text/plain': ['.txt'], 'application/pdf': ['.pdf'] },
+    accept: { 'text/plain': ['.txt'] },
     multiple: false
   });
 
@@ -61,7 +61,7 @@ export default function ProfileOptimizer({ onAnalysisComplete, onLoading }: Prof
       <div className="space-y-4">
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-semibold text-slate-700">Paste LinkedIn Profile URL or Upload PDF/TXT</label>
+            <label className="text-sm font-semibold text-slate-700">Paste LinkedIn Profile URL or Profile Text</label>
             <button 
               onClick={() => setProfileText("Alex Rivera\nProduct Marketing Manager at SaaSFlow\n\nExperience:\n- Scaled user acquisition by 200% in 12 months.\n- Managed a $500k monthly ad budget across LinkedIn and Google.\n- Launched 3 major product features with cross-functional teams.\n\nAbout:\nI'm a marketing leader obsessed with growth and customer psychology. I've spent 8 years helping SaaS companies find their voice and their audience.")}
               className="text-xs text-blue-600 hover:underline font-medium"
@@ -86,8 +86,9 @@ export default function ProfileOptimizer({ onAnalysisComplete, onLoading }: Prof
           <input {...getInputProps()} />
           <Upload className="mx-auto text-slate-400 mb-2" size={24} />
           <p className="text-sm text-slate-500">
-            {isDragActive ? 'Drop the file here' : 'Drag & drop profile PDF/TXT or click to upload'}
+            {isDragActive ? 'Drop the file here' : 'Drag & drop profile TXT or click to upload'}
           </p>
+          <p className="text-[10px] text-slate-400 mt-1 italic">For PDFs, please copy-paste the text above.</p>
         </div>
 
         {error && (

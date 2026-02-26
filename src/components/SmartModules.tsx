@@ -7,7 +7,8 @@ import {
   Search,
   Plus,
   ArrowRight,
-  Loader2
+  Loader2,
+  AlertCircle
 } from 'lucide-react';
 import { 
   compareProfiles, 
@@ -47,15 +48,18 @@ const SmartModules: React.FC<SmartModulesProps> = ({
   const [viralPost, setViralPost] = useState('');
   const [niche, setNiche] = useState('');
   const [calendarGoal, setCalendarGoal] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleCompare = async () => {
     if (!p1 || !p2) return;
+    setError(null);
     onLoading(true);
     try {
       const result = await compareProfiles(p1, p2);
       onComparisonComplete(result);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to compare profiles.');
     } finally {
       onLoading(false);
     }
@@ -63,12 +67,14 @@ const SmartModules: React.FC<SmartModulesProps> = ({
 
   const handleHeadlines = async () => {
     if (!industry || !goal) return;
+    setError(null);
     onLoading(true);
     try {
       const result = await generateHeadlines(industry, goal);
       onHeadlinesComplete(result);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to generate headlines.');
     } finally {
       onLoading(false);
     }
@@ -76,12 +82,14 @@ const SmartModules: React.FC<SmartModulesProps> = ({
 
   const handleViral = async () => {
     if (!viralPost) return;
+    setError(null);
     onLoading(true);
     try {
       const result = await analyzeViralPost(viralPost);
       onViralComplete(result);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to analyze viral post.');
     } finally {
       onLoading(false);
     }
@@ -89,16 +97,25 @@ const SmartModules: React.FC<SmartModulesProps> = ({
 
   const handleCalendar = async () => {
     if (!niche || !calendarGoal) return;
+    setError(null);
     onLoading(true);
     try {
       const result = await generateCalendar(niche, calendarGoal);
       onCalendarComplete(result);
-    } catch (error) {
-      console.error(error);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Failed to generate calendar.');
     } finally {
       onLoading(false);
     }
   };
+
+  const ErrorDisplay = () => error ? (
+    <div className="flex items-center gap-2 text-red-600 bg-red-50 p-3 rounded-lg text-sm mb-4">
+      <AlertCircle size={16} />
+      <span>{error}</span>
+    </div>
+  ) : null;
 
   if (activeTab === 'compare') {
     return (
@@ -142,6 +159,7 @@ const SmartModules: React.FC<SmartModulesProps> = ({
               className="w-full h-32 p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-sm"
             />
           </div>
+          <ErrorDisplay />
           <button
             onClick={handleCompare}
             className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md shadow-blue-200"
@@ -197,6 +215,7 @@ const SmartModules: React.FC<SmartModulesProps> = ({
               className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all text-sm"
             />
           </div>
+          <ErrorDisplay />
           <button
             onClick={handleHeadlines}
             className="w-full py-4 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md shadow-purple-200"
@@ -238,6 +257,7 @@ const SmartModules: React.FC<SmartModulesProps> = ({
               className="w-full h-48 p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all resize-none text-sm"
             />
           </div>
+          <ErrorDisplay />
           <button
             onClick={handleViral}
             className="w-full py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md shadow-amber-200"
@@ -293,6 +313,7 @@ const SmartModules: React.FC<SmartModulesProps> = ({
               className="w-full p-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all text-sm"
             />
           </div>
+          <ErrorDisplay />
           <button
             onClick={handleCalendar}
             className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-200"

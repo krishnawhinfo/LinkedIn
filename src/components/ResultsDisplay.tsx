@@ -430,7 +430,7 @@ export default function ResultsDisplay({
                 Carousel Outline
               </h3>
               <div className="space-y-6">
-                {post.carouselOutline.slides.map((slide, i) => (
+                {post.carouselOutline?.slides?.map((slide, i) => (
                   <div key={i} className="border-l-2 border-blue-500/30 pl-6 py-2">
                     <h4 className="text-blue-400 font-bold text-sm mb-1">Slide {i + 1}: {slide.title}</h4>
                     <p className="text-slate-300 text-sm leading-relaxed">{slide.content}</p>
@@ -464,7 +464,7 @@ const ComparisonCard = ({ data, isWinner }: { data: { name: string, score: numbe
     <div className="text-3xl font-black text-blue-600 mb-4">{data.score}</div>
     <div className="space-y-2">
       <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Strengths</p>
-      {data.strengths.map((s, i) => (
+      {data?.strengths?.map((s, i) => (
         <div key={i} className="flex items-center gap-2 text-sm text-slate-600">
           <CheckCircle2 size={14} className="text-emerald-500" />
           {s}
@@ -490,7 +490,7 @@ const ResultCard = ({ icon, title, items, color }: { icon: React.ReactNode, titl
         {title}
       </h4>
       <ul className="space-y-2">
-        {items.map((item, i) => (
+        {items?.map((item, i) => (
           <li key={i} className="text-sm text-slate-600 flex gap-2">
             <span className={cn("font-bold", colorMap[color] || 'text-slate-500')}>•</span>
             {item}
